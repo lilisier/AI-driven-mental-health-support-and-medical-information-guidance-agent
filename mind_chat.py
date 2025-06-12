@@ -3,15 +3,15 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Chroma
-from langchain.chains import RetrievalQA  # 尽管会自定义逻辑，但保留用于潜在的直接检索能力
+from langchain.chains import RetrievalQA  
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
 from langchain.schema import HumanMessage, SystemMessage
 import os
-import openai  # 保留用于环境变量配置
-import httpx  # 保留用于潜在的调试或高级配置
+import openai  
+import httpx  
 
 # --- API 配置 ---
-base_url = "https://api.chatanywhere.tech/v1/"
+base_url = ""
 api_key = os.getenv("OPENAI_API_KEY")
 
 if not api_key:
@@ -23,8 +23,8 @@ CHROMA_DB_PATH = "./vectordb"  # 定义向量数据库的保存路径
 
 print("--- 步骤1: 加载文档 (模拟医疗知识库) ---")
 # 2. 加载你的文档
-# 为了演示医疗信息引导，这里假设 product_info.txt 包含了一些心理健康或医疗的科普信息
-# 在实际项目中，你会构建一个更全面的医疗知识库
+
+
 loader = TextLoader("青少年心理健康教育知识科普.txt", encoding="utf-8")
 documents = loader.load()
 print(f"成功加载 {len(documents)} 份文档，这些文档将作为我们的医疗知识库。")
@@ -45,7 +45,7 @@ embeddings = OpenAIEmbeddings(
 print("嵌入模型初始化完成。")
 
 # 5. 检查并加载或创建向量数据库 (Vectorstore)
-# ！！！关键改动点！！！
+
 if os.path.exists(CHROMA_DB_PATH):
     print(f"检测到现有向量数据库于 '{CHROMA_DB_PATH}'，正在加载...")
     docsearch = Chroma(persist_directory=CHROMA_DB_PATH, embedding_function=embeddings)
